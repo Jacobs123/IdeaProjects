@@ -35,14 +35,14 @@ public class RegisterPageController {
         User userExists = userService.findUserByEmail(user.getMail());
         if (userExists != null) {
             result.rejectValue("mail", "error.user", "Podany adres email jest już zarejestrowany w bazie");
-            message = "Bład emial istnieje w systemie";
+            message = "Adres email istnieje w systemie";
         }
         if (result.hasErrors()) {
             returnPage = "registration";
         } else {
             userService.saveUser(user);
-            emailService.send(user.getMail(), "Portal pracowniczy link potwierdzający",
-                "http://localhost:8080/confirm?id=" + user.getConfirmationId());
+//            emailService.send(user.getMail(), "Portal pracowniczy link potwierdzający",
+//                "http://localhost:8080/confirm?id=" + user.getConfirmationId());
             model.addAttribute("message", "Rejestracja przebiegła pomyślnie. W celu aktywacji konta proszę sprawdzić pocztę");
             model.addAttribute("user", new User());
             message = "Rejestracja przebiegła pomyślnie. W celu aktywacji konta proszę sprawdzić pocztę";

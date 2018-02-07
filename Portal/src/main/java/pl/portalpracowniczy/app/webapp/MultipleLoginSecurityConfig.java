@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity()
 public class MultipleLoginSecurityConfig {
 
 
@@ -58,7 +59,7 @@ public class MultipleLoginSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
                 http
                 // log in
-                .formLogin().loginPage("/loginUser").loginProcessingUrl("/user_login").failureUrl("/loginUser?error=loginError").defaultSuccessUrl("/employer/main")
+                .formLogin().loginPage("/loginUser").loginProcessingUrl("/user_login").failureUrl("/loginUser?error=loginError").defaultSuccessUrl("employer/dashboard")
                 // logout
                 .and().logout().logoutUrl("/admin_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
         }
@@ -89,9 +90,10 @@ public class MultipleLoginSecurityConfig {
         }
 
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/employee*").authorizeRequests().anyRequest().hasRole("EMPLOYEE")
+//                http.antMatcher("/employee*").authorizeRequests().anyRequest().hasRole("EMPLOYEE")
                 // log in
-                .and().formLogin().loginPage("/loginEmployee").loginProcessingUrl("/employee_login").failureUrl("/loginEmployee?error=loginError").defaultSuccessUrl("/dashboard")
+                http
+                .formLogin().loginPage("/loginEmployee").loginProcessingUrl("/employee_login").failureUrl("/loginEmployee?error=loginError").defaultSuccessUrl("/employee/dashboard")
                 // logout
                 .and().logout().logoutUrl("/user_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
         }

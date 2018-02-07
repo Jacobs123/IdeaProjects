@@ -27,7 +27,7 @@ public class EmployerController {
     UserService userService;
 
 
-    @GetMapping("employer/main")
+    @GetMapping("employer/dashboard")
     private String mainPage(){
         return "employer_main";
     }
