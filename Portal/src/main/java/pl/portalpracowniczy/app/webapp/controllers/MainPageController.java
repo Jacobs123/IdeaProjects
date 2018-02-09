@@ -1,6 +1,7 @@
 package pl.portalpracowniczy.app.webapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class MainPageController {
         @Autowired
         UserService userService;
 
-        /*Wyswietlenie głownej strony aplikacji*/
+        @Secured("ROLE_USER")
         @GetMapping("/")
         String homePage(){
             return "home";

@@ -58,7 +58,7 @@
 //        protected void configure(HttpSecurity http) throws Exception {
 //            http.antMatcher("/user*").authorizeRequests().anyRequest().hasRole("USER").and()
 //                    // log in
-//                    .formLogin().loginPage("/loginUser").loginProcessingUrl("/user_login").failureUrl("/loginUser?error=loginError").defaultSuccessUrl("/employer/main")
+//                    .formLogin().loginPage("/loginUser").loginProcessingUrl("/user_login").failureUrl("/loginUser?error=loginError").defaultSuccessUrl("/user/main")
 //                    // logout
 //                    .and().logout().logoutUrl("/admin_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
 //        }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,11 +21,13 @@ import javax.sql.DataSource;
 
 @EnableWebSecurity
 @Configuration
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class MultipleLoginSecurityConfig {
 
 
     @Configuration
     @Order(1)
+    @EnableGlobalMethodSecurity(securedEnabled = true)
     public static class App1ConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         @Qualifier("dataSource")
@@ -54,9 +57,11 @@ public class MultipleLoginSecurityConfig {
 
         }
 
-        @Override
+
+                @Override
         protected void configure(HttpSecurity http) throws Exception {
-                http.antMatcher("/user*").authorizeRequests().anyRequest().hasRole("USER").and().formLogin()
+                http.authorizeRequests().anyRequest().permitAll().and().
+                        formLogin()
                     // log in
                 .loginPage("/login_usr").loginProcessingUrl("/user_login").failureUrl("/loginUser?error=loginError").defaultSuccessUrl("/user/dashboard")
                 // logout
@@ -64,8 +69,12 @@ public class MultipleLoginSecurityConfig {
         }
     }
 
+    /*
+        Employee Config
+     */
     @Configuration
     @Order(2)
+    @EnableGlobalMethodSecurity(securedEnabled = true)
     public static class App2ConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         public App2ConfigurationAdapter() {
@@ -90,11 +99,10 @@ public class MultipleLoginSecurityConfig {
 
 
         protected  void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/employee*").authorizeRequests().anyRequest().hasRole("EMPLOYEE").and().formLogin()
-                    // log in
-                    .loginPage("/login_usr").loginProcessingUrl("/employee_login").failureUrl("/loginEmp?error=loginError").defaultSuccessUrl("/employee/main")
-                    // logout
-                    .and().logout().logoutUrl("/user_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
+                    http.formLogin()
+                                .loginPage("/login_emp").failureUrl("/loginEmp?error=loginError").defaultSuccessUrl("/employee/main")
+                                // logout
+                                .and().logout().logoutUrl("/user_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
         }
     }
 
