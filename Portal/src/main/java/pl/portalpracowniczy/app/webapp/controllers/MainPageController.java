@@ -22,16 +22,30 @@ public class MainPageController {
 
         @Secured("ROLE_USER")
         @GetMapping("/")
-        String homePage(){
+        String homePage(Model model, Principal principal){
+//
+//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//            System.out.println("Zalogowany jako" + principal.getName());
+//            model.addAttribute("user", userService.findUserByEmail(principal.getName()));
             return "home";
         }
         /*Wyswietlenie strony z wyborem logowania*/
-
         @GetMapping("/login")
         String loginPage(){
-        return "switch_login";
+        return "main_loginPage";
         }
 
+        /*Formularz logowania jako pracodawca*/
+        @GetMapping("/login/user")
+        String employerloginPage(Model model) {
+        return "user_login";
+        }
+
+        /*Formularz logowania jako pracownik */
+        @GetMapping("/login/employee")
+        String employeePage(Model model, Principal principal) {
+            return "employee_login";
+        }
 
 }
 

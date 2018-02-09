@@ -1,7 +1,4 @@
-/**
-
-package pl.portalpracowniczy.app.webapp.service;
-
+package pl.portalpracowniczy.app.webapp.temporary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,4 +32,4 @@ public class UserDetailsService implements org.springframework.security.core.use
     }
 }
 
- */
+

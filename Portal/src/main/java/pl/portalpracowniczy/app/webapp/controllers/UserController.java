@@ -8,19 +8,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pl.portalpracowniczy.app.webapp.domain.Company;
 import pl.portalpracowniczy.app.webapp.domain.Employee;
 import pl.portalpracowniczy.app.webapp.service.CompanyService;
-import pl.portalpracowniczy.app.webapp.service.EmployeeRoleService;
 import pl.portalpracowniczy.app.webapp.service.UserService;
 import pl.portalpracowniczy.app.webapp.service.implementation.EmployeeService;
 
 import javax.validation.Valid;
 import java.security.Principal;
 
+
 @Controller
-public class EmployerController {
+public class UserController {
 
 
     @Autowired
@@ -29,8 +32,7 @@ public class EmployerController {
     EmployeeService employeeService;
     @Autowired
     UserService userService;
-    @Autowired
-    EmployeeRoleService employeeRoleService;
+
 
     @GetMapping("user/dashboard")
     private String mainPage(Model model, Principal principal) {
@@ -38,7 +40,6 @@ public class EmployerController {
         model.addAttribute("user", userService.findUserByEmail(principal.getName()));
         return "user/user_dashboard";
     }
-
 
     /*
       Metoda zwraca widok fomularza do dodania firmy przed uzytkownika( pracodawce );
@@ -48,23 +49,28 @@ public class EmployerController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Company company = new Company();
                 company.setUser(userService.findUserByEmail(auth.getName()));
-                company.setName("EBIS");
+                company.setName("");
                 companyService.createEployee(company);
         return "user/create_company";
     }
 
+    @ResponseBody
     @PostMapping("user/createCompany")
     private String saveCompany(){
 
-        return null;
+        return "Tworzenie firmy";
     }
+
     /*
      Metoda zwraca widok fomularza do dodania pracownika
     */
     @GetMapping("user/createEmployee")
     private String displayEmployeeForm(Model model){
+
         Employee employee = new Employee();
+
         model.addAttribute("employee", employee);
+
         return "user/create_employee";
     }
     /*
@@ -74,9 +80,8 @@ public class EmployerController {
     @ResponseBody
     private String createEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult bindingResult){
         employeeService.createEployee(employee);
-        return "Dodano nowego pracownika";
+        return "create_employee";
     }
-
 
     private String createEmployeePosition(){
         return null;

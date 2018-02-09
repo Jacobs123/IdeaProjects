@@ -2,7 +2,6 @@ package pl.portalpracowniczy.app.webapp.service;
 
 
 import pl.portalpracowniczy.app.webapp.domain.Employee;
-import pl.portalpracowniczy.app.webapp.service.implementation.EmployeeRoleService;
 
 public interface EmployeeService {
     /**
