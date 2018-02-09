@@ -25,12 +25,12 @@ public class LoginController {
 
     @RequestMapping("/loginEmployee")
     public String getAdminLoginPage() {
-        return "employee_login";
+        return "login_emp";
     }
 
     @RequestMapping("/loginUser")
     public String getUserLoginPage() {
-        return "user_login";
+        return "login_usr";
     }
 
     @RequestMapping("/403")

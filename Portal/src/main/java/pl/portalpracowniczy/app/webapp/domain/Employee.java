@@ -16,6 +16,7 @@ public class Employee {
     @Column(name = "employee_surname") // Nie moze zawierać cyft
     private String surname;
 
+
     /* authorization data */
     private String login;
     private String password;

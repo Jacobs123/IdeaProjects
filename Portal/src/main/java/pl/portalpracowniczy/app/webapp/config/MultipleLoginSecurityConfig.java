@@ -1,4 +1,4 @@
-package pl.portalpracowniczy.app.webapp;
+package pl.portalpracowniczy.app.webapp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,9 +18,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import javax.sql.DataSource;
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity()
+@Configuration
 public class MultipleLoginSecurityConfig {
 
 
@@ -57,11 +56,11 @@ public class MultipleLoginSecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-                http
-                // log in
-                .formLogin().loginPage("/loginUser").loginProcessingUrl("/user_login").failureUrl("/loginUser?error=loginError").defaultSuccessUrl("employer/dashboard")
+                http.antMatcher("/user*").authorizeRequests().anyRequest().hasRole("USER").and().formLogin()
+                    // log in
+                .loginPage("/login_usr").loginProcessingUrl("/user_login").failureUrl("/loginUser?error=loginError").defaultSuccessUrl("/user/dashboard")
                 // logout
-                .and().logout().logoutUrl("/admin_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
+                .and().logout().logoutUrl("/user_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
         }
     }
 
@@ -89,13 +88,13 @@ public class MultipleLoginSecurityConfig {
                      .authoritiesByUsernameQuery(employeeRolesQuery);
         }
 
-        protected void configure(HttpSecurity http) throws Exception {
-//                http.antMatcher("/employee*").authorizeRequests().anyRequest().hasRole("EMPLOYEE")
-                // log in
-                http
-                .formLogin().loginPage("/loginEmployee").loginProcessingUrl("/employee_login").failureUrl("/loginEmployee?error=loginError").defaultSuccessUrl("/employee/dashboard")
-                // logout
-                .and().logout().logoutUrl("/user_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
+
+        protected  void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/employee*").authorizeRequests().anyRequest().hasRole("EMPLOYEE").and().formLogin()
+                    // log in
+                    .loginPage("/login_usr").loginProcessingUrl("/employee_login").failureUrl("/loginEmp?error=loginError").defaultSuccessUrl("/employee/main")
+                    // logout
+                    .and().logout().logoutUrl("/user_logout").logoutSuccessUrl("/protectedLinks").deleteCookies("JSESSIONID").and().exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
         }
     }
 
